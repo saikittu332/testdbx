@@ -41,7 +41,7 @@ def test_token(token, repo_url=None):
 
 def main():
     # Try to read token from .env file first
-    token = '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'
+    token = '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'
    
     
     # If not found in .env, try environment variable
