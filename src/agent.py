@@ -192,7 +192,7 @@ Please review the changes and merge if appropriate.
     def run(self):
         """Execute the full workflow"""
         try:
-            if not validate_github_token(self.github_token, self.repo_url):
+            if not self.validate_github_token(self.github_token, self.repo_url):
                 logger.error("GitHub token validation failed. Please check token and permissions.")
                 return None
             self.clone_repository()
@@ -209,7 +209,7 @@ Please review the changes and merge if appropriate.
             # Clean up temp directory
             logger.info(f"Cleaning up temporary directory: {self.temp_dir}")
             # subprocess.run(["rm", "-rf", self.temp_dir], check=True)
-            cleanup_directory(self.temp_dir)
+            self.cleanup_directory(self.temp_dir)
 
 
 # Example advanced agent class that performs specific code improvements
