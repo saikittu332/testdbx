@@ -156,10 +156,45 @@ Please review the changes and merge if appropriate.
         except Exception as e:
             logger.error(f"Failed to create pull request: {str(e)}")
             return None
+    
+    def validate_github_token(token, repo_url):
+        """Validate GitHub token before proceeding"""
+        try:
+            g = Github(token)
+            user = g.get_user()
+            logger.info(f"Authenticated as: {user.login}")
+            
+            # Try to access the repository to confirm permissions
+            owner, repo_name = repo_url.split('/')
+            repo = g.get_repo(f"{owner}/{repo_name}")
+            logger.info(f"Successfully validated access to repository: {repo.full_name}")
+            return True
+        except Exception as e:
+            logger.error(f"Token validation failed: {str(e)}")
+            return False
+    
+    def cleanup_directory(directory):
+        """Cross-platform directory cleanup"""
+        try:
+            import shutil
+            import time
+            
+            # Give a moment for any file handles to be released
+            time.sleep(1)
+            
+            # Use shutil.rmtree for cross-platform directory removal
+            if os.path.exists(directory):
+                shutil.rmtree(directory, ignore_errors=True)
+                logger.info(f"Cleaned up directory: {directory}")
+        except Exception as e:
+        logger.warning(f"Could not clean up directory {directory}: {str(e)}")
         
     def run(self):
         """Execute the full workflow"""
         try:
+            if not validate_github_token(self.github_token, self.repo_url):
+                logger.error("GitHub token validation failed. Please check token and permissions.")
+                return None
             self.clone_repository()
             self.create_branch()
             self.make_changes()
@@ -173,7 +208,8 @@ Please review the changes and merge if appropriate.
         finally:
             # Clean up temp directory
             logger.info(f"Cleaning up temporary directory: {self.temp_dir}")
-            subprocess.run(["rm", "-rf", self.temp_dir], check=True)
+            # subprocess.run(["rm", "-rf", self.temp_dir], check=True)
+            cleanup_directory(self.temp_dir)
 
 
 # Example advanced agent class that performs specific code improvements
