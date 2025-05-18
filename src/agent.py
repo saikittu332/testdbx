@@ -219,8 +219,8 @@ class CodeImprovementAgent(GitHubAIAgent):
 def main():
     """Main entry point"""
     # Configuration should come from environment variables for security
-    github_token = os.environ.get("GITHUB_TOKEN")
-    repo_url = os.environ.get("REPO_URL", "sample-org/sample-repo")
+    github_token = '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'
+    repo_url = 'https://github.com/saikittu332/testdbx'
     
     if not github_token:
         logger.error("GitHub token not provided. Set the GITHUB_TOKEN environment variable.")
