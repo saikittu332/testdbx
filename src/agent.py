@@ -157,7 +157,7 @@ Please review the changes and merge if appropriate.
             logger.error(f"Failed to create pull request: {str(e)}")
             return None
     
-    def validate_github_token(token, repo_url):
+    def validate_github_token(self, token, repo_url):
         """Validate GitHub token before proceeding"""
         try:
             g = Github(token)
@@ -173,7 +173,7 @@ Please review the changes and merge if appropriate.
             logger.error(f"Token validation failed: {str(e)}")
             return False
     
-    def cleanup_directory(directory):
+    def cleanup_directory(self, directory):
         """Cross-platform directory cleanup"""
         try:
             import shutil
