@@ -255,7 +255,7 @@ class CodeImprovementAgent(GitHubAIAgent):
 def main():
     """Main entry point"""
     # Configuration should come from environment variables for security
-    github_token = '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'
+    github_token = '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'
     repo_url = 'saikittu332/testdbx'
     
     if not github_token:
