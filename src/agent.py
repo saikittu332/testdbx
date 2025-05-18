@@ -187,7 +187,7 @@ Please review the changes and merge if appropriate.
                 shutil.rmtree(directory, ignore_errors=True)
                 logger.info(f"Cleaned up directory: {directory}")
         except Exception as e:
-        logger.warning(f"Could not clean up directory {directory}: {str(e)}")
+            logger.warning(f"Could not clean up directory {directory}: {str(e)}")
         
     def run(self):
         """Execute the full workflow"""
