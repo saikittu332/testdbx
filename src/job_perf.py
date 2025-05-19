@@ -432,7 +432,7 @@ class JobPerformanceAnalyzer:
 # print(report)
 
 # Initialize the analyzer with your dataset
-analyzer = JobPerformanceAnalyzer('/data/databricks_job_runs_realistic.csv')
+analyzer = JobPerformanceAnalyzer('C:/Users/dasin/OneDrive/Documents/hckthn/repo/testdbx/data/databricks_job_runs_realistic.csv')
 
 # Get a schema overview of your data
 schema = analyzer.get_schema()
