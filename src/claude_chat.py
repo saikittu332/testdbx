@@ -128,84 +128,51 @@ class AIJobAgent:
             return "No specific job data context available for this query."
     
     def _get_ai_response(self, query, job_data_context):
-        """
-        Get a response from the AI model API, augmented with job data context.
-        
-        Args:
-            query: User's query
-            job_data_context: Context about job data relevant to the query
-            
-        Returns:
-            Response from the AI model
-        """
-        # For demonstration, we'll use Anthropic's Claude API
-        # You can easily swap this for OpenAI's GPT or another API
+        """Get a response from OpenAI's GPT models."""
         
         if not self.api_key:
-            return "API key not found. Please set ANTHROPIC_API_KEY environment variable or provide API key during initialization."
+            return "API key not found. Please set OPENAI_API_KEY environment variable or provide API key during initialization."
         
         # Update conversation history
         self.conversation_history.append({"role": "user", "content": query})
         
         try:
-            # This is a simplified example of calling Claude API
-            # You would replace this with the actual API call pattern for your chosen AI model
-            prompt = f"""You are an AI assistant specializing in Databricks job performance analysis and general data engineering knowledge. 
-You have access to the user's Databricks job performance data. Answer their question using this data when relevant.
-
-Here is the relevant job data context for this query:
-
-{job_data_context}
-
-User's question: {query}
-
-Answer in a helpful, knowledgeable manner. If the question is about the job data, use the provided context.
-If it's a general question about Databricks, Spark, or data engineering, answer based on your knowledge."""
-
-            # This is where you'd make the actual API call to Claude or another AI service
-            # This is pseudo-code - you'll need to replace with actual API calls
-            if "ANTHROPIC_API_KEY" in os.environ or (self.api_key and len(self.api_key) > 20):
-                # Use Claude API
-                headers = {
-                    "x-api-key": self.api_key,
-                    "content-type": "application/json"
-                }
-                
-                payload = {
-                    "model": "claude-3-opus-20240229",  # Use whatever model version is current
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 1000
-                }
-                
-                response = requests.post(
-                    "https://api.anthropic.com/v1/messages",
-                    headers=headers,
-                    json=payload
-                )
-                
-                if response.status_code == 200:
-                    result = response.json()
-                    ai_response = result["content"][0]["text"]
-                    self.conversation_history.append({"role": "assistant", "content": ai_response})
-                    return ai_response
-                else:
-                    return f"Error calling AI API: {response.status_code} - {response.text}"
-                    
-            # Fallback example response when no API key is available
-            example_responses = [
-                "Based on your job data, Job 102 has the most timeout issues and would benefit from increasing the timeout setting.",
-                "Your data shows that clusters with 4 workers provide the optimal performance, with an average runtime of 4.41 minutes.",
-                "Databricks and Azure Synapse both have strengths. Databricks excels at flexible data science workflows and ML, while Synapse offers tighter Azure integration and better pure SQL performance.",
-                "I can see from your job data that there are 30 unique jobs with a total of 33 runs analyzed."
+            # OpenAI API integration
+            import openai
+            
+            # Set the API key
+            openai.api_key = self.api_key
+            
+            # Create system message with job data context
+            system_message = f"""You are an AI assistant specializing in Databricks job performance analysis and general data engineering knowledge.
+            You have access to the user's Databricks job performance data. Answer their question using this data when relevant.
+            
+            Here is the relevant job data context for this query:
+            
+            {job_data_context}"""
+            
+            # Prepare messages for the conversation
+            messages = [
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": query}
             ]
             
-            import random
-            ai_response = random.choice(example_responses)
+            # Add previous conversation history (limited to last few exchanges)
+            # Note: This would need to be implemented to maintain history
+            
+            # Call the OpenAI API
+            response = openai.ChatCompletion.create(
+                model="gpt-4",  # or any other OpenAI model
+                messages=messages,
+                max_tokens=1000
+            )
+            
+            ai_response = response.choices[0].message.content
             self.conversation_history.append({"role": "assistant", "content": ai_response})
-            return ai_response + "\n\n(This is a simulated response. To get real AI responses, please provide an API key for Claude or another AI service.)"
-                
+            return ai_response
+            
         except Exception as e:
-            return f"Error getting AI response: {str(e)}. Please ensure your API key is correct and the AI service is available."
+            return f"Error getting AI response: {str(e)}. Please ensure your API key is correct and the OpenAI service is available."
 
 
 # Integration code to connect the AI agent with your job analyzer
