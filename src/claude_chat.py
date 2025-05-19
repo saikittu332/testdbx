@@ -158,7 +158,7 @@ class AIJobAgent:
             ]
             
             # Try models in order of preference with fallback
-            models_to_try = ["gpt-4.1", "gpt-4", "gpt-3.5-turbo"]
+            models_to_try = ["gpt-4.1", "gpt-4", "gpt-3.5-turbo", "gpt-4o-mini"]
             
             for model in models_to_try:
                 try:
