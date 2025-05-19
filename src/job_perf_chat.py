@@ -491,6 +491,14 @@ class JobPerformanceAnalyzer:
         issues = self.identify_performance_issues()
         recommendations = self.recommend_optimizations()
         
+        # Count total jobs
+        if any(keyword in query for keyword in ['how many job', 'total job', 'count job']):
+            if not summary.empty:
+                job_count = len(summary)
+                total_runs = summary['run_count'].sum()
+                return f"There are {job_count} unique jobs in the current dataset with a total of {total_runs} job runs."
+            return "No job data available."
+        
         # Handle queries about job stats
         if any(keyword in query for keyword in ['highest runtime', 'longest runtime', 'slowest']):
             if len(summary) > 0:
@@ -521,12 +529,32 @@ class JobPerformanceAnalyzer:
         
         # Handle queries about cluster configurations
         if any(keyword in query for keyword in ['optimal cluster', 'best cluster', 'optimal worker', 'best worker']):
-            if len(cluster_analysis) > 0:
-                mean_col = cluster_analysis.columns[cluster_analysis.columns.str.contains('mean')][0]
-                min_runtime = cluster_analysis[mean_col].min()
-                best_worker_count = cluster_analysis.loc[cluster_analysis[mean_col] == min_runtime, 'num_workers'].values[0]
-                return f"The optimal cluster configuration appears to be {best_worker_count} workers, with an average runtime of {min_runtime:.2f} minutes."
-            return "No cluster analysis data available."
+            if not cluster_analysis.empty:
+                # Handle MultiIndex columns properly
+                if isinstance(cluster_analysis.columns, pd.MultiIndex):
+                    # Find the mean column in MultiIndex
+                    mean_col = None
+                    for col in cluster_analysis.columns:
+                        if 'mean' in col[1].lower():
+                            mean_col = col
+                            break
+                    
+                    if mean_col:
+                        min_runtime = cluster_analysis[mean_col].min()
+                        best_worker_row = cluster_analysis[cluster_analysis[mean_col] == min_runtime]
+                        if not best_worker_row.empty:
+                            best_worker_count = best_worker_row.iloc[0]['num_workers']
+                            return f"The optimal cluster configuration appears to be {best_worker_count} workers, with an average runtime of {min_runtime:.2f} minutes."
+                else:
+                    # For non-MultiIndex columns
+                    mean_col = [col for col in cluster_analysis.columns if 'mean' in col.lower()]
+                    if mean_col:
+                        mean_col = mean_col[0]
+                        min_runtime = cluster_analysis[mean_col].min()
+                        best_worker_count = cluster_analysis.loc[cluster_analysis[mean_col] == min_runtime, 'num_workers'].values[0]
+                        return f"The optimal cluster configuration appears to be {best_worker_count} workers, with an average runtime of {min_runtime:.2f} minutes."
+            
+            return "No cluster analysis data available or couldn't determine optimal configuration."
         
         # Handle queries about specific jobs
         if 'job' in query and any(str(job_id) in query for job_id in summary['job_id'].astype(str).values):
@@ -593,11 +621,23 @@ class JobPerformanceAnalyzer:
         if recommendations:
             response += f"- Generated {len(recommendations)} recommendations\n"
         
-        if len(cluster_analysis) > 0:
-            mean_col = cluster_analysis.columns[cluster_analysis.columns.str.contains('mean')][0]
-            min_runtime = cluster_analysis[mean_col].min()
-            best_worker_count = cluster_analysis.loc[cluster_analysis[mean_col] == min_runtime, 'num_workers'].values[0]
-            response += f"- Optimal worker count appears to be: {best_worker_count}\n"
+        # Safely extract optimal worker count information
+        if not cluster_analysis.empty:
+            try:
+                if isinstance(cluster_analysis.columns, pd.MultiIndex):
+                    # Find the mean column in MultiIndex
+                    for col in cluster_analysis.columns:
+                        if 'mean' in col[1].lower():
+                            mean_col = col
+                            min_runtime = cluster_analysis[mean_col].min()
+                            best_worker_row = cluster_analysis[cluster_analysis[mean_col] == min_runtime]
+                            if not best_worker_row.empty:
+                                best_worker_count = best_worker_row.iloc[0]['num_workers']
+                                response += f"- Optimal worker count appears to be: {best_worker_count}\n"
+                            break
+            except Exception as e:
+                # If any error occurs when trying to determine optimal worker count, just skip it
+                pass
         
         response += "\nTry asking more specific questions about jobs, performance, issues, or recommendations."
         return response
