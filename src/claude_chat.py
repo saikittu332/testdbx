@@ -128,7 +128,7 @@ class AIJobAgent:
             return "No specific job data context available for this query."
     
     def _get_ai_response(self, query, job_data_context):
-        """Get a response from OpenAI's GPT models."""
+        """Get a response from OpenAI's models with fallback options."""
         
         if not self.api_key:
             return "API key not found. Please set OPENAI_API_KEY environment variable or provide API key during initialization."
@@ -137,11 +137,11 @@ class AIJobAgent:
         self.conversation_history.append({"role": "user", "content": query})
         
         try:
-            # OpenAI API integration
-            import openai
+            # OpenAI API integration with newer client library
+            from openai import OpenAI
             
-            # Set the API key
-            openai.api_key = self.api_key
+            # Set up the client with the API key
+            client = OpenAI(api_key=self.api_key)
             
             # Create system message with job data context
             system_message = f"""You are an AI assistant specializing in Databricks job performance analysis and general data engineering knowledge.
@@ -157,19 +157,28 @@ class AIJobAgent:
                 {"role": "user", "content": query}
             ]
             
-            # Add previous conversation history (limited to last few exchanges)
-            # Note: This would need to be implemented to maintain history
+            # Try models in order of preference with fallback
+            models_to_try = ["gpt-4", "gpt-3.5-turbo"]
             
-            # Call the OpenAI API
-            response = openai.ChatCompletion.create(
-                model="gpt-4",  # or any other OpenAI model
-                messages=messages,
-                max_tokens=1000
-            )
+            for model in models_to_try:
+                try:
+                    # Call the OpenAI API
+                    response = client.chat.completions.create(
+                        model=model,
+                        messages=messages,
+                        max_tokens=1000
+                    )
+                    
+                    ai_response = response.choices[0].message.content
+                    self.conversation_history.append({"role": "assistant", "content": ai_response})
+                    return ai_response
+                except Exception as model_error:
+                    # If this model fails, try the next one
+                    print(f"Model {model} failed: {str(model_error)}. Trying next model...")
+                    continue
             
-            ai_response = response.choices[0].message.content
-            self.conversation_history.append({"role": "assistant", "content": ai_response})
-            return ai_response
+            # If we get here, all models failed
+            return "Unable to get a response from any available AI model. Please check your API access and try again."
             
         except Exception as e:
             return f"Error getting AI response: {str(e)}. Please ensure your API key is correct and the OpenAI service is available."
@@ -186,33 +195,33 @@ if __name__ == "__main__":
     # Initialize your job analyzer
     job_analyzer = JobPerformanceAnalyzer(csv_path)
     
-    # Run the standard analysis first
-    print("\n--- JOB SUMMARY ---")
-    summary = job_analyzer.get_job_summary()
-    print(summary)
+    # # Run the standard analysis first
+    # print("\n--- JOB SUMMARY ---")
+    # summary = job_analyzer.get_job_summary()
+    # print(summary)
     
-    print("\n--- CLUSTER ANALYSIS ---")
-    cluster_analysis = job_analyzer.analyze_cluster_configurations()
-    print(cluster_analysis)
+    # print("\n--- CLUSTER ANALYSIS ---")
+    # cluster_analysis = job_analyzer.analyze_cluster_configurations()
+    # print(cluster_analysis)
     
-    print("\n--- PERFORMANCE ISSUES ---")
-    issues = job_analyzer.identify_performance_issues()
-    for issue in issues:
-        print(f"Job ID: {issue['job_id']}, Issue: {issue['description']}, Severity: {issue['severity']}")
+    # print("\n--- PERFORMANCE ISSUES ---")
+    # issues = job_analyzer.identify_performance_issues()
+    # for issue in issues:
+    #     print(f"Job ID: {issue['job_id']}, Issue: {issue['description']}, Severity: {issue['severity']}")
     
-    print("\n--- OPTIMIZATION RECOMMENDATIONS ---")
-    recommendations = job_analyzer.recommend_optimizations()
-    for rec in recommendations:
-        print(f"Job ID: {rec['job_id']}, Recommendation: {rec['description']}")
-        print(f"   Action: {rec['action']}")
+    # print("\n--- OPTIMIZATION RECOMMENDATIONS ---")
+    # recommendations = job_analyzer.recommend_optimizations()
+    # for rec in recommendations:
+    #     print(f"Job ID: {rec['job_id']}, Recommendation: {rec['description']}")
+    #     print(f"   Action: {rec['action']}")
     
-    # Check if API key is available from environment variable
-    api_key = input("Enter your OpenAI API Key: ")
+    # # Check if API key is available from environment variable
+    # api_key = input("Enter your OpenAI API Key: ")
     
-    if not api_key:
-        print("\nWARNING: No AI API key found in environment variables.")
-        print("For full AI capabilities, set ANTHROPIC_API_KEY or OPENAI_API_KEY environment variable.")
-        print("Continuing with simulated AI responses.")
+    # if not api_key:
+    #     print("\nWARNING: No AI API key found in environment variables.")
+    #     print("For full AI capabilities, set ANTHROPIC_API_KEY or OPENAI_API_KEY environment variable.")
+    #     print("Continuing with simulated AI responses.")
     
     # Create the AI agent with the job analyzer and API key
     ai_agent = AIJobAgent(job_analyzer, api_key)
