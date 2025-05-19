@@ -1,0 +1,34 @@
+job_id,job_name,run_id,run_time_utc,duration_seconds,status,trigger_type,creator,job_output,cluster_type,num_workers,node_type_id,driver_node_type_id,spark_version,timeout_seconds
+101,Ingest Oracle Sales Data,4501,2025-05-18T02:35:00Z,180,SUCCESS,SCHEDULED,sai.dasineni@company.com,Data written to Silver layer: 90532 records,STANDARD,4,Standard_DS3_v2,Standard_DS3_v2,10.4.x-scala2.12,3600
+102,API Orders ETL,4502,2025-05-18T03:15:00Z,300,FAILED,MANUAL,alex.ross@company.com,Rows processed: 63695,STANDARD,6,Standard_DS4_v2,Standard_DS4_v2,11.3.x-scala2.12,1800
+103,Delta Optimization Job,4503,2025-05-18T03:45:00Z,120,SUCCESS,SCHEDULED,maria.johnson@company.com,"Tables optimized: 24590, Total files compacted: 421",JOB_CLUSTER,2,Standard_DS2_v2,Standard_DS2_v2,11.3.x-scala2.12,600
+101,Job 101,4601,2025-05-18T07:30:00Z,150,SUCCESS,SCHEDULED,alex.ross@company.com,Streaming job checkpointed at 24758,STANDARD,3,Standard_DS2_v2,Standard_DS2_v2,11.3.x-scala2.12,900
+102,Job 102,4602,2025-05-18T08:30:00Z,200,SUCCESS,API_TRIGGERED,maria.johnson@company.com,Error: Connection timeout after 69316 seconds,STANDARD,4,Standard_DS3_v2,Standard_DS3_v2,10.4.x-scala2.12,1200
+103,Job 103,4603,2025-05-18T09:30:00Z,250,SUCCESS,SCHEDULED,lisa.wong@company.com,Invalid schema encountered in input file: 98297,STANDARD,5,Standard_DS4_v2,Standard_DS4_v2,11.3.x-scala2.12,1500
+104,Job 104,4604,2025-05-18T10:30:00Z,300,SUCCESS,SCHEDULED,sai.dasineni@company.com,"API response processed: 31531, Failed records: 241",JOB_CLUSTER,2,Standard_DS5_v2,Standard_DS5_v2,10.4.x-scala2.12,1800
+105,Job 105,4605,2025-05-18T11:30:00Z,350,FAILED,API_TRIGGERED,alex.ross@company.com,Data load latency: 55990 seconds,STANDARD,3,Standard_DS1_v2,Standard_DS1_v2,11.3.x-scala2.12,600
+106,Job 106,4606,2025-05-18T12:30:00Z,400,SUCCESS,SCHEDULED,maria.johnson@company.com,Data written to Silver layer: 76716 records,STANDARD,4,Standard_DS2_v2,Standard_DS2_v2,10.4.x-scala2.12,900
+107,Job 107,4607,2025-05-18T13:30:00Z,450,SUCCESS,SCHEDULED,lisa.wong@company.com,"Delta table vacuumed: 68959, Retained data: 357 days",STANDARD,5,Standard_DS3_v2,Standard_DS3_v2,11.3.x-scala2.12,1200
+108,Job 108,4608,2025-05-18T14:30:00Z,500,SUCCESS,API_TRIGGERED,sai.dasineni@company.com,"Tables optimized: 35718, Total files compacted: 309",JOB_CLUSTER,2,Standard_DS4_v2,Standard_DS4_v2,10.4.x-scala2.12,1500
+109,Job 109,4609,2025-05-18T15:30:00Z,550,SUCCESS,SCHEDULED,alex.ross@company.com,Snapshot ingestion completed for 64814 tables,STANDARD,3,Standard_DS5_v2,Standard_DS5_v2,11.3.x-scala2.12,1800
+110,Job 110,4610,2025-05-18T16:30:00Z,100,SUCCESS,SCHEDULED,maria.johnson@company.com,Job partially succeeded: 82023 records failed validation,STANDARD,4,Standard_DS1_v2,Standard_DS1_v2,10.4.x-scala2.12,600
+111,Job 111,4611,2025-05-18T17:30:00Z,150,SUCCESS,API_TRIGGERED,lisa.wong@company.com,Data load latency: 91360 seconds,STANDARD,5,Standard_DS2_v2,Standard_DS2_v2,11.3.x-scala2.12,900
+112,Job 112,4612,2025-05-18T18:30:00Z,200,FAILED,SCHEDULED,sai.dasineni@company.com,Pipeline validation errors: 83471,JOB_CLUSTER,2,Standard_DS3_v2,Standard_DS3_v2,10.4.x-scala2.12,1200
+113,Job 113,4613,2025-05-18T19:30:00Z,250,SUCCESS,SCHEDULED,alex.ross@company.com,Snapshot ingestion completed for 71084 tables,STANDARD,3,Standard_DS4_v2,Standard_DS4_v2,11.3.x-scala2.12,1500
+114,Job 114,4614,2025-05-18T20:30:00Z,300,SUCCESS,API_TRIGGERED,maria.johnson@company.com,Job partially succeeded: 50303 records failed validation,STANDARD,4,Standard_DS5_v2,Standard_DS5_v2,10.4.x-scala2.12,1800
+115,Job 115,4615,2025-05-18T21:30:00Z,350,SUCCESS,SCHEDULED,lisa.wong@company.com,Snapshot ingestion completed for 86372 tables,STANDARD,5,Standard_DS1_v2,Standard_DS1_v2,11.3.x-scala2.12,600
+116,Job 116,4616,2025-05-18T22:30:00Z,400,SUCCESS,SCHEDULED,sai.dasineni@company.com,Data written to Silver layer: 6122 records,JOB_CLUSTER,2,Standard_DS2_v2,Standard_DS2_v2,10.4.x-scala2.12,900
+117,Job 117,4617,2025-05-18T23:30:00Z,450,SUCCESS,API_TRIGGERED,alex.ross@company.com,"Delta table vacuumed: 29680, Retained data: 221 days",STANDARD,3,Standard_DS3_v2,Standard_DS3_v2,11.3.x-scala2.12,1200
+118,Job 118,4618,2025-05-18T00:30:00Z,500,SUCCESS,SCHEDULED,maria.johnson@company.com,"Tables optimized: 48290, Total files compacted: 21",STANDARD,4,Standard_DS4_v2,Standard_DS4_v2,10.4.x-scala2.12,1500
+119,Job 119,4619,2025-05-18T01:30:00Z,550,FAILED,SCHEDULED,lisa.wong@company.com,Data load latency: 42148 seconds,STANDARD,5,Standard_DS5_v2,Standard_DS5_v2,11.3.x-scala2.12,1800
+120,Job 120,4620,2025-05-18T02:30:00Z,100,SUCCESS,API_TRIGGERED,sai.dasineni@company.com,Pipeline validation errors: 36974,JOB_CLUSTER,2,Standard_DS1_v2,Standard_DS1_v2,10.4.x-scala2.12,600
+121,Job 121,4621,2025-05-18T03:30:00Z,150,SUCCESS,SCHEDULED,alex.ross@company.com,"Delta table vacuumed: 98734, Retained data: 56 days",STANDARD,3,Standard_DS2_v2,Standard_DS2_v2,11.3.x-scala2.12,900
+122,Job 122,4622,2025-05-18T04:30:00Z,200,SUCCESS,SCHEDULED,maria.johnson@company.com,Completed merge into target table: 6051 records updated,STANDARD,4,Standard_DS3_v2,Standard_DS3_v2,10.4.x-scala2.12,1200
+123,Job 123,4623,2025-05-18T05:30:00Z,250,SUCCESS,API_TRIGGERED,lisa.wong@company.com,Snapshot ingestion completed for 53025 tables,STANDARD,5,Standard_DS4_v2,Standard_DS4_v2,11.3.x-scala2.12,1500
+124,Job 124,4624,2025-05-18T06:30:00Z,300,SUCCESS,SCHEDULED,sai.dasineni@company.com,Pipeline validation errors: 29762,JOB_CLUSTER,2,Standard_DS5_v2,Standard_DS5_v2,10.4.x-scala2.12,1800
+125,Job 125,4625,2025-05-18T07:30:00Z,350,SUCCESS,SCHEDULED,alex.ross@company.com,Invalid schema encountered in input file: 72655,STANDARD,3,Standard_DS1_v2,Standard_DS1_v2,11.3.x-scala2.12,600
+126,Job 126,4626,2025-05-18T08:30:00Z,400,FAILED,API_TRIGGERED,maria.johnson@company.com,Invalid schema encountered in input file: 23560,STANDARD,4,Standard_DS2_v2,Standard_DS2_v2,10.4.x-scala2.12,900
+127,Job 127,4627,2025-05-18T09:30:00Z,450,SUCCESS,SCHEDULED,lisa.wong@company.com,Streaming job checkpointed at 68468,STANDARD,5,Standard_DS3_v2,Standard_DS3_v2,11.3.x-scala2.12,1200
+128,Job 128,4628,2025-05-18T10:30:00Z,500,SUCCESS,SCHEDULED,sai.dasineni@company.com,Data written to Silver layer: 56442 records,JOB_CLUSTER,2,Standard_DS4_v2,Standard_DS4_v2,10.4.x-scala2.12,1500
+129,Job 129,4629,2025-05-18T11:30:00Z,550,SUCCESS,API_TRIGGERED,alex.ross@company.com,Data load latency: 76168 seconds,STANDARD,3,Standard_DS5_v2,Standard_DS5_v2,11.3.x-scala2.12,1800
+130,Job 130,4630,2025-05-18T12:30:00Z,100,SUCCESS,SCHEDULED,maria.johnson@company.com,Data written to Silver layer: 5139 records,STANDARD,4,Standard_DS1_v2,Standard_DS1_v2,10.4.x-scala2.12,600
