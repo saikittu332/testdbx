@@ -215,13 +215,13 @@ if __name__ == "__main__":
     #     print(f"Job ID: {rec['job_id']}, Recommendation: {rec['description']}")
     #     print(f"   Action: {rec['action']}")
     
-    # # Check if API key is available from environment variable
-    # api_key = input("Enter your OpenAI API Key: ")
+    # Check if API key is available from environment variable
+    api_key = input("Enter your OpenAI API Key: ")
     
-    # if not api_key:
-    #     print("\nWARNING: No AI API key found in environment variables.")
-    #     print("For full AI capabilities, set ANTHROPIC_API_KEY or OPENAI_API_KEY environment variable.")
-    #     print("Continuing with simulated AI responses.")
+    if not api_key:
+        print("\nWARNING: No AI API key found in environment variables.")
+        print("For full AI capabilities, set ANTHROPIC_API_KEY or OPENAI_API_KEY environment variable.")
+        print("Continuing with simulated AI responses.")
     
     # Create the AI agent with the job analyzer and API key
     ai_agent = AIJobAgent(job_analyzer, api_key)
