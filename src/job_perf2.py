@@ -453,23 +453,52 @@ class JobPerformanceAnalyzer:
 # Initialize the analyzer with your dataset
 analyzer = JobPerformanceAnalyzer('C:/Users/dasin/OneDrive/Documents/hckthn/repo/testdbx/data/databricks_job_runs_realistic.csv')
 
-# Get a schema overview of your data
-schema = analyzer.get_schema()
-
 # Get job summary statistics
 summary = analyzer.get_job_summary()
+print("\n--- JOB SUMMARY ---")
+print(summary)
 
 # Analyze how cluster configurations impact performance
 cluster_analysis = analyzer.analyze_cluster_configurations()
+print("\n--- CLUSTER ANALYSIS ---")
+print(cluster_analysis)
 
 # Identify performance issues
 issues = analyzer.identify_performance_issues()
+print("\n--- PERFORMANCE ISSUES ---")
+for issue in issues:
+    print(f"Job ID: {issue['job_id']}, Issue: {issue['description']}, Severity: {issue['severity']}")
 
 # Get optimization recommendations
 recommendations = analyzer.recommend_optimizations()
+print("\n--- OPTIMIZATION RECOMMENDATIONS ---")
+for rec in recommendations:
+    print(f"Job ID: {rec['job_id']}, Recommendation: {rec['description']}")
+    print(f"   Action: {rec['action']}")
 
 # Generate visualizations
+print("\n--- GENERATING VISUALIZATIONS ---")
 visualizations = analyzer.visualize_job_performance()
+print("Visualizations created but not displayed (would need a display interface)")
+
+# Save the visualizations
+try:
+    for name, fig in visualizations.items():
+        if fig:
+            fig_path = f"{name}.png"
+            fig.savefig(fig_path)
+            print(f"Saved visualization to {fig_path}")
+except Exception as e:
+    print(f"Error saving visualizations: {str(e)}")
 
 # Generate a comprehensive report
+print("\n--- GENERATING PERFORMANCE REPORT ---")
 report = analyzer.generate_performance_report()
+print("Report generated with the following sections:")
+for section, data in report.items():
+    if isinstance(data, list):
+        print(f"- {section}: {len(data)} items")
+    else:
+        print(f"- {section}")
+
+print("\nAnalysis complete!")
