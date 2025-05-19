@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 GitHub AI Agent - Autonomous repository updater
 
@@ -253,8 +252,7 @@ class CodeImprovementAgent(GitHubAIAgent):
 
 
 def main():
-    """Main entry point"""
-    # Configuration should come from environment variables for security
+
     github_token = input("Enter your GitHub Personal Access Token: ")
     repo_url = 'saikittu332/testdbx'
     
