@@ -207,7 +207,7 @@ if __name__ == "__main__":
         print(f"   Action: {rec['action']}")
     
     # Check if API key is available from environment variable
-    api_key = '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'
+    api_key = input("Enter your OpenAI API Key: ")
     
     if not api_key:
         print("\nWARNING: No AI API key found in environment variables.")
