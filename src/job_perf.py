@@ -163,21 +163,21 @@ class JobPerformanceAnalyzer:
         
         # Find relevant columns
         runtime_col = None
-        for col in ['runtime', 'runtime_minutes', 'duration', 'execution_time']:
+        for col in ['runtime', 'runtime_minutes', 'duration', 'execution_time', 'duration_seconds']:
             if col in self.job_data.columns:
                 runtime_col = col
+                break
+        
+        job_id_col = None
+        for col in ['job_id', 'job_name', 'job', 'id', 'name']:
+            if col in self.job_data.columns:
+                job_id_col = col
                 break
         
         output_cols = [col for col in self.job_data.columns if 'output' in col.lower() or 'log' in col.lower()]
         
         if runtime_col:
             # Identify jobs with high runtime variance
-            job_id_col = None
-            for col in ['job_id', 'job_name', 'job', 'id', 'name']:
-                if col in self.job_data.columns:
-                    job_id_col = col
-                    break
-            
             if job_id_col:
                 job_stats = self.job_data.groupby(job_id_col)[runtime_col].agg(['mean', 'std']).reset_index()
                 # Calculate coefficient of variation (relative standard deviation)
